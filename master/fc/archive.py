@@ -831,7 +831,8 @@ class FCArchive(pt.PrintClient):
         """
         try:
             old = self.P
-            new = pk.load(open(name, 'rb'))
+            with open(name, 'rb') as fh:
+                new = pk.load(fh)
             # TODO: Validate?
             self.P = new
             self.P.update(self.runtime)
@@ -850,7 +851,8 @@ class FCArchive(pt.PrintClient):
         sent to the print queue.
         """
         try:
-            pk.dump(self.profile(), open(name, 'wb'))
+            with open(name, 'wb') as fh:
+                pk.dump(self.profile(), fh)
             self.isModified = False
         except IOError as e:
             self.printx(e, "Could not save profile")

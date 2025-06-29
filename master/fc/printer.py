@@ -168,7 +168,7 @@ class PrintClient:
     """
     SYMBOL = "[--]"
 
-    def __init__(self, pqueue, symbol = "[--]"):
+    def __init__(self, pqueue, symbol="[--]"):
         """
         Create the following member functions for streamlined queued printing
         in this instance:
@@ -181,7 +181,8 @@ class PrintClient:
         - printx: exception print
 
         """
-        P = printers(pqueue, self.SYMBOL)
+        self.SYMBOL = symbol
+        P = printers(pqueue, symbol)
         self.printr = P[R]
         self.printe = P[E]
         self.printw = P[W]
@@ -207,7 +208,7 @@ class PrintServer(PrintClient):
         Build and start a PrintServer that tracks PQUEUE. A daemonic "print
         thread" will be started.
         """
-        PrintClient.__init__(self, pqueue)
+        PrintClient.__init__(self, pqueue, self.SYMBOL)
 
         self.started = False
         self.done = mt.Event()
@@ -256,7 +257,7 @@ class PrintServer(PrintClient):
                     traceback.format_exc())
                 self.printx(e, "Exception in print thread:")
         print(self.SYMBOL, "Print thread terminated.")
-        self.printr("Print thread started.")
+        self.printr("Print thread terminated.")
 
     def _checkStarted(self):
         """

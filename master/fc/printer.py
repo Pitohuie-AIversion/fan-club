@@ -51,8 +51,7 @@ WRN = sys.stdout
 ERR = sys.stderr
 OUT = sys.stdout
 
-HEADER = \
-"""
+HEADER = r"""
 --------------------------------------------------------------------------------
 -- CALIFORNIA INSTITUTE OF TECHNOLOGY -- GRADUATE AEROSPACE LABORATORY        --
 -- CENTER FOR AUTONOMOUS SYSTEMS AND TECHNOLOGIES                             --

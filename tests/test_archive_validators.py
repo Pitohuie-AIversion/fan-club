@@ -18,5 +18,12 @@ class ArchiveValidatorTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             v([1, 2])
 
+    def test_length_validator_large(self):
+        """Ensure validator works for lengths beyond small integer caching."""
+        v = archive.make_length_validator(300)
+        v(list(range(300)))
+        with self.assertRaises(ValueError):
+            v(list(range(299)))
+
 if __name__ == '__main__':
     unittest.main()

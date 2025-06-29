@@ -295,7 +295,7 @@ def make_length_validator(length):
     LENGTH.
     """
     def validator(value):
-        if len(value) is not length:
+        if len(value) != length:
             raise ValueError(
                 "Value ({}) does not have the required length {}".format(value,
                     length))

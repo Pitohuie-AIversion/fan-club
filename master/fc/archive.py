@@ -29,6 +29,8 @@
 ## IMPORTS #####################################################################
 import pickle as pk
 import copy as cp
+from pathlib import Path
+from typing import Union
     # For deep copies. See:
     # https://stackoverflow.com/questions/3975376/\
     #   understanding-dict-copy-shallow-or-deep/3975388
@@ -827,7 +829,7 @@ class FCArchive(pt.PrintClient):
         except KeyError as e:
             self.printe("Invalid FC Archive key \"{}\"".format(attribute))
 
-    def load(self, name):
+    def load(self, name: Union[str, Path]):
         """
         Load profile data from a file named NAME with extension.
 
@@ -836,7 +838,8 @@ class FCArchive(pt.PrintClient):
         """
         try:
             old = self.P
-            with open(name, 'rb') as fh:
+            path = Path(name)
+            with path.open('rb') as fh:
                 new = pk.load(fh)
             # TODO: Validate?
             self.P = new
@@ -846,7 +849,7 @@ class FCArchive(pt.PrintClient):
             self.printx(e, "Could not load profile")
             self.P = old
 
-    def save(self, name):
+    def save(self, name: Union[str, Path]):
         """
         Save current profile to file named NAME.
         Note that if a file with this name and extension exists it will be
@@ -856,7 +859,8 @@ class FCArchive(pt.PrintClient):
         sent to the print queue.
         """
         try:
-            with open(name, 'wb') as fh:
+            path = Path(name)
+            with path.open('wb') as fh:
                 pk.dump(self.profile(), fh)
             self.isModified = False
         except IOError as e:

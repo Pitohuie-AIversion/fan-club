@@ -2,6 +2,7 @@
 
 import sys
 import queue
+import io
 import unittest
 sys.path.insert(0, 'master')
 from fc import printer
@@ -43,6 +44,25 @@ class PrinterTest(unittest.TestCase):
         server.thread.join(timeout=1)
         self.assertIn(('r', 'Print thread started.'), server.logs)
         self.assertIn(('r', 'Print thread terminated.'), server.logs)
+
+    def test_printserver_context_manager(self):
+        q = queue.Queue()
+        class Dummy(printer.PrintServer):
+            def print(self, code, text):
+                pass
+        with Dummy(q) as srv:
+            self.assertTrue(srv.thread.is_alive())
+            q.put_nowait((printer.R, 'msg'))
+        self.assertFalse(srv.thread.is_alive())
+
+    def test_stdout_printserver(self):
+        q = queue.Queue()
+        buf = io.StringIO()
+        srv = printer.StdoutPrintServer(q, stream=buf)
+        with srv:
+            q.put_nowait((printer.R, 'hello'))
+            time.sleep(0.05)
+        self.assertIn('hello', buf.getvalue())
 
 if __name__ == '__main__':
     unittest.main()

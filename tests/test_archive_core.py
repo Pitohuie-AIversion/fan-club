@@ -4,6 +4,7 @@ import sys
 import os
 import queue
 import tempfile
+from pathlib import Path
 import unittest
 sys.path.insert(0, 'master')
 from fc import archive
@@ -35,6 +36,19 @@ class ArchiveCoreTest(unittest.TestCase):
             self.assertEqual(self.arc[archive.name], 'Saved')
         finally:
             os.remove(path)
+
+    def test_save_and_load_path_object(self):
+        self.arc.set(archive.name, 'PathSaved')
+        fd, path = tempfile.mkstemp()
+        os.close(fd)
+        p = Path(path)
+        try:
+            self.arc.save(p)
+            self.arc.set(archive.name, 'Changed')
+            self.arc.load(p)
+            self.assertEqual(self.arc[archive.name], 'PathSaved')
+        finally:
+            p.unlink()
 
 if __name__ == '__main__':
     unittest.main()

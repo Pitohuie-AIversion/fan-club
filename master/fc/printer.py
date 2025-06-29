@@ -29,6 +29,7 @@
 import sys
 import traceback
 import io as io
+from typing import Callable, Dict, Iterable, MutableMapping, Optional, Union
     # StringIO to redirect stdout. See:
     # https://stackoverflow.com/questions/1218933/
     #   can-i-redirect-the-stdout-in-python-into-some-sort-of-string-buffer
@@ -99,7 +100,7 @@ MI_CONT = 1
 ## AUXILIARY FUNCTIONS #########################################################
 
 ## Printing utilities ----------------------------------------------------------
-def printers(queue, symbol = "[--]"):
+def printers(queue: mp.Queue, symbol: str = "[--]") -> Dict[int, Callable[..., None]]:
     """
     Generate and return standard FC print functions that redirect their output
     to the multiprocess queue QUEUE after prefixing SYMBOL. The functions are
@@ -168,7 +169,7 @@ class PrintClient:
     """
     SYMBOL = "[--]"
 
-    def __init__(self, pqueue, symbol="[--]"):
+    def __init__(self, pqueue: mp.Queue, symbol: str = "[--]") -> None:
         """
         Create the following member functions for streamlined queued printing
         in this instance:
@@ -205,7 +206,7 @@ class PrintServer(PrintClient):
     """
     SYMBOL = "[PS]"
 
-    def __init__(self, pqueue):
+    def __init__(self, pqueue: mp.Queue) -> None:
         """
         Build and start a PrintServer that tracks PQUEUE. A daemonic "print
         thread" will be started.
@@ -240,6 +241,11 @@ class PrintServer(PrintClient):
         Set the flag to end the print thread. Cannot be undone.
         """
         self.pqueue.put_nowait(std.END)
+
+    def join(self, timeout: Optional[float] = None) -> None:
+        """Wait for the print thread to finish."""
+        if hasattr(self, 'thread'):
+            self.thread.join(timeout)
 
     def _routine(self):
         """
@@ -276,3 +282,23 @@ class PrintServer(PrintClient):
         Record that this instance has been started once.
         """
         self.started = True
+
+    # Context manager helpers -------------------------------------------------
+    def __enter__(self):
+        self.start()
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        self.stop()
+        self.join()
+        return False
+
+class StdoutPrintServer(PrintServer):
+    """PrintServer that writes messages directly to a text stream."""
+
+    def __init__(self, pqueue: mp.Queue, stream: io.TextIOBase = sys.stdout) -> None:
+        super().__init__(pqueue)
+        self.stream = stream
+
+    def print(self, code: int, text: str) -> None:
+        print(text, file=self.stream)

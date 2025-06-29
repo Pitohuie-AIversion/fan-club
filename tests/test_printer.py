@@ -1,3 +1,5 @@
+"""Tests for fc.printer queue-based logging."""
+
 import sys
 import queue
 import unittest
@@ -6,6 +8,7 @@ from fc import printer
 import time
 
 class PrinterTest(unittest.TestCase):
+    """Exercise printer queue helpers and server routine."""
     def test_printer_puts_messages(self):
         q = queue.Queue()
         funcs = printer.printers(q)

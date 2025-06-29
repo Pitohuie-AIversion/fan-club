@@ -181,6 +181,8 @@ class PrintClient:
         - printx: exception print
 
         """
+        # Remember the symbol requested for this client so the server can
+        # identify its messages.
         self.SYMBOL = symbol
         P = printers(pqueue, symbol)
         self.printr = P[R]
@@ -245,6 +247,7 @@ class PrintServer(PrintClient):
         and checks for the appropriate threading.Event to terminate.
         """
         print(self.SYMBOL, "Print thread started.")
+        # Mirror the message through the queue for uniform logging
         self.printr("Print thread started.")
         while True:
             try:
@@ -257,6 +260,7 @@ class PrintServer(PrintClient):
                     traceback.format_exc())
                 self.printx(e, "Exception in print thread:")
         print(self.SYMBOL, "Print thread terminated.")
+        # Notify listeners using the regular print channel
         self.printr("Print thread terminated.")
 
     def _checkStarted(self):

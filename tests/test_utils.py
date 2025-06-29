@@ -1,3 +1,5 @@
+"""Unit tests for the fc.utils module."""
+
 import sys
 import io
 import platform
@@ -6,6 +8,7 @@ sys.path.insert(0, 'master')
 from fc import utils
 
 class UtilsTest(unittest.TestCase):
+    """Tests for platform detection and debug helpers."""
     def test_platform(self):
         result = utils.platform()
         self.assertIn(result, (utils.WINDOWS, utils.MAC, utils.LINUX, utils.UNKNOWN))

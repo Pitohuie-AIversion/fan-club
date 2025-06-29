@@ -661,7 +661,12 @@ class FCArchive(pt.PrintClient):
     meta = META
     defaults = DEFAULTS
 
-    """ Default profile. """
+    """Default profile used when no profile is provided.
+
+    This dictionary contains sensible network and hardware parameters for a
+    single-module setup. New profiles should be created by copying and
+    modifying these values.
+    """
     DEFAULT = {
         name : "Unnamed FC Profile",
         description : "",

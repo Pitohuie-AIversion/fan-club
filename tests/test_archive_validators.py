@@ -1,9 +1,12 @@
+"""Tests for archive validation helper functions."""
+
 import sys
 import unittest
 sys.path.insert(0, 'master')
 from fc import archive
 
 class ArchiveValidatorTest(unittest.TestCase):
+    """Validate range and length checking helpers."""
     def test_range_validator(self):
         v = archive.make_range_validator(0, 10)
         v(5)

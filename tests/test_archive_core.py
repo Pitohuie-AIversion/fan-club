@@ -1,3 +1,5 @@
+"""Functional tests for FCArchive core features."""
+
 import sys
 import os
 import queue
@@ -7,6 +9,7 @@ sys.path.insert(0, 'master')
 from fc import archive
 
 class ArchiveCoreTest(unittest.TestCase):
+    """Verify core FCArchive behaviors such as save and load."""
     def setUp(self):
         self.q = queue.Queue()
         self.arc = archive.FCArchive(self.q, 'test', archive.FCArchive.DEFAULT)

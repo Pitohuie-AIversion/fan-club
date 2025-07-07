@@ -26,6 +26,7 @@
  + Repository of built-in profiles.
  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ """
 from fc import archive as ac
+import copy as cp
 
 MODULE = {
     ac.name : "Single CAST Module",
@@ -8809,6 +8810,13 @@ CANN = {
     ),
 }
 
+# Simplified duplicate of CANN for a generic ten-by-ten demonstration array.
+TENBYTEN = cp.deepcopy(CANN)
+TENBYTEN.update({
+    ac.name : "Ten-by-Ten Array",
+    ac.description : "Example 10x10 profile",
+})
+
 
 
 
@@ -8823,4 +8831,5 @@ PROFILES = {
     "DEV2" : DEV2,
     "DEV3" : DEV3,
     "CANN" : CANN,
+    "TENBYTEN" : TENBYTEN,
 }

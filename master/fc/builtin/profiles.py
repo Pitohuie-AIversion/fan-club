@@ -26,7 +26,6 @@
  + Repository of built-in profiles.
  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ """
 from fc import archive as ac
-import copy as cp
 
 MODULE = {
     ac.name : "Single CAST Module",
@@ -8810,12 +8809,191 @@ CANN = {
     ),
 }
 
-# Simplified duplicate of CANN for a generic ten-by-ten demonstration array.
-TENBYTEN = cp.deepcopy(CANN)
-TENBYTEN.update({
+# Built-in demonstration profile for a generic 10×10 tunnel array.
+TENBYTEN = {
     ac.name : "Ten-by-Ten Array",
     ac.description : "Example 10x10 profile",
-})
+    ac.platform : ac.UNKNOWN,
+
+    ac.broadcastIP : "192.168.1.255",
+    ac.broadcastPort  : 65000,
+    ac.broadcastPeriodMS : 1000,
+    ac.periodMS : 100,
+    ac.maxLength : 512,
+    ac.maxTimeouts : 10,
+
+    ac.mainQueueSize : 10,
+    ac.slaveQueueSize: 10,
+    ac.broadcastQueueSize : 2,
+    ac.listenerQueueSize : 3,
+    ac.misoQueueSize : 2,
+    ac.printerQueueSize : 3,
+    ac.passcode : "CT",
+    ac.socketLimit : 1024,
+
+    ac.pinouts : ac.PINOUTS.copy(),
+    ac.maxRPM : 5500,
+    ac.maxFans : 20,
+    ac.dcDecimals : 2,
+    ac.fanArray : {
+        ac.FA_rows : 10,
+        ac.FA_columns : 10,
+        ac.FA_layers : 1,
+    },
+
+    ac.defaultSlave :
+        {
+            ac.SV_name : "Ten-by-Ten Module",
+            ac.SV_mac : "None",
+            ac.SV_index : -1,
+            ac.SV_fanModel : "Unknown",
+            ac.SV_fanMode : ac.SINGLE,
+            ac.SV_targetRelation :(1.0, 0.0),
+            ac.SV_chaserTolerance : 0.02,
+            ac.SV_fanFrequencyHZ : 25000,
+            ac.SV_counterCounts : 2,
+            ac.SV_counterTimeoutMS : 30,
+            ac.SV_pulsesPerRotation : 2,
+            ac.SV_maxRPM : 16000,
+            ac.SV_minRPM : 1200,
+            ac.SV_minDC : 0.1,
+            ac.SV_maxFans : 21,
+            ac.SV_pinout : "S117",
+            ac.MD_assigned : False,
+            ac.MD_row : -1,
+            ac.MD_column : -1,
+            ac.MD_rows : 0,
+            ac.MD_columns : 0,
+            ac.MD_mapping : ()
+        },
+    ac.savedSlaves : (
+        {
+            ac.SV_name : "Rows 1 & 2",
+            ac.SV_mac : "00:80:e1:24:00:20",
+            ac.SV_index : -1,
+            ac.SV_fanModel : "Unknown",
+            ac.SV_fanMode : ac.SINGLE,
+            ac.SV_targetRelation :(1.0, 0.0),
+            ac.SV_chaserTolerance : 0.02,
+            ac.SV_fanFrequencyHZ : 25000,
+            ac.SV_counterCounts : 2,
+            ac.SV_counterTimeoutMS : 30,
+            ac.SV_pulsesPerRotation : 2,
+            ac.SV_maxRPM : 16000,
+            ac.SV_minRPM : 1200,
+            ac.SV_minDC : 0.1,
+            ac.SV_maxFans : 20,
+            ac.SV_pinout : "BASE",
+            ac.MD_assigned : True,
+            ac.MD_row : 0,
+            ac.MD_column : 0,
+            ac.MD_rows : 2,
+            ac.MD_columns : 10,
+            ac.MD_mapping : \
+                '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19'
+        },
+        {
+            ac.SV_name : "Rows 3 & 4",
+            ac.SV_mac : "00:80:e1:3c:00:36",
+            ac.SV_index : -1,
+            ac.SV_fanModel : "Unknown",
+            ac.SV_fanMode : ac.SINGLE,
+            ac.SV_targetRelation :(1.0, 0.0),
+            ac.SV_chaserTolerance : 0.02,
+            ac.SV_fanFrequencyHZ : 25000,
+            ac.SV_counterCounts : 2,
+            ac.SV_counterTimeoutMS : 30,
+            ac.SV_pulsesPerRotation : 2,
+            ac.SV_maxRPM : 16000,
+            ac.SV_minRPM : 1200,
+            ac.SV_minDC : 0.1,
+            ac.SV_maxFans : 20,
+            ac.SV_pinout : "BASE",
+            ac.MD_assigned : True,
+            ac.MD_row : 2,
+            ac.MD_column : 0,
+            ac.MD_rows : 2,
+            ac.MD_columns : 10,
+            ac.MD_mapping : \
+                '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19'
+        },
+        {
+            ac.SV_name : "Rows 5 & 6",
+            ac.SV_mac : "00:80:e1:2c:00:2c",
+            ac.SV_index : -1,
+            ac.SV_fanModel : "Unknown",
+            ac.SV_fanMode : ac.SINGLE,
+            ac.SV_targetRelation :(1.0, 0.0),
+            ac.SV_chaserTolerance : 0.02,
+            ac.SV_fanFrequencyHZ : 25000,
+            ac.SV_counterCounts : 2,
+            ac.SV_counterTimeoutMS : 30,
+            ac.SV_pulsesPerRotation : 2,
+            ac.SV_maxRPM : 16000,
+            ac.SV_minRPM : 1200,
+            ac.SV_minDC : 0.1,
+            ac.SV_maxFans : 20,
+            ac.SV_pinout : "BASE",
+            ac.MD_assigned : True,
+            ac.MD_row : 4,
+            ac.MD_column : 0,
+            ac.MD_rows : 2,
+            ac.MD_columns : 10,
+            ac.MD_mapping : \
+                '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19'
+        },
+        {
+            ac.SV_name : "Rows 7 & 8",
+            ac.SV_mac : "00:80:e1:40:00:30",
+            ac.SV_index : -1,
+            ac.SV_fanModel : "Unknown",
+            ac.SV_fanMode : ac.SINGLE,
+            ac.SV_targetRelation :(1.0, 0.0),
+            ac.SV_chaserTolerance : 0.02,
+            ac.SV_fanFrequencyHZ : 25000,
+            ac.SV_counterCounts : 2,
+            ac.SV_counterTimeoutMS : 30,
+            ac.SV_pulsesPerRotation : 2,
+            ac.SV_maxRPM : 16000,
+            ac.SV_minRPM : 1200,
+            ac.SV_minDC : 0.1,
+            ac.SV_maxFans : 20,
+            ac.SV_pinout : "BASE",
+            ac.MD_assigned : True,
+            ac.MD_row : 6,
+            ac.MD_column : 0,
+            ac.MD_rows : 2,
+            ac.MD_columns : 10,
+            ac.MD_mapping : \
+                '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19'
+        },
+        {
+            ac.SV_name : "Rows 9 & 10",
+            ac.SV_mac : "00:80:e1:1d:00:31",
+            ac.SV_index : -1,
+            ac.SV_fanModel : "Unknown",
+            ac.SV_fanMode : ac.SINGLE,
+            ac.SV_targetRelation :(1.0, 0.0),
+            ac.SV_chaserTolerance : 0.02,
+            ac.SV_fanFrequencyHZ : 25000,
+            ac.SV_counterCounts : 2,
+            ac.SV_counterTimeoutMS : 30,
+            ac.SV_pulsesPerRotation : 2,
+            ac.SV_maxRPM : 16000,
+            ac.SV_minRPM : 1200,
+            ac.SV_minDC : 0.1,
+            ac.SV_maxFans : 20,
+            ac.SV_pinout : "BASE",
+            ac.MD_assigned : True,
+            ac.MD_row : 8,
+            ac.MD_column : 0,
+            ac.MD_rows : 2,
+            ac.MD_columns : 10,
+            ac.MD_mapping : \
+                '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19'
+        },
+    ),
+}
 
 
 

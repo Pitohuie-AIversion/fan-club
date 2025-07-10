@@ -77,3 +77,30 @@ def l(message = "", prefix = '', postfix = '\n'):
     - POSTFIX defaults to newline.
     """
     print(prefix, "L:", ln(), message, end = postfix)
+
+# ---------------------------------------------------------------------------
+# Minimal printing helpers used by the unit tests
+from . import printer as pt
+
+# Export commonly used printing constants for convenience
+R = pt.R
+W = pt.W
+E = pt.E
+S = pt.S
+D = pt.D
+X = pt.X
+
+# Provide access to the printer helpers expected by the obsolete tests
+printers = pt.printers
+
+class TerminalPrinter(pt.PrintServer):
+    """Simple PrintServer that logs to stdout/stderr."""
+    SYMBOL = "[TP]"
+
+    def print(self, code, text):
+        stream = pt.OUT
+        if code == pt.W:
+            stream = pt.WRN
+        elif code == pt.E:
+            stream = pt.ERR
+        print(text, file=stream)

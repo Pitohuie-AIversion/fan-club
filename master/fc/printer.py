@@ -257,7 +257,7 @@ class PrintServer(PrintClient):
                     traceback.format_exc())
                 self.printx(e, "Exception in print thread:")
         print(self.SYMBOL, "Print thread terminated.")
-        self.printr("Print thread started.")
+        self.printr("Print thread terminated.")
 
     def _checkStarted(self):
         """

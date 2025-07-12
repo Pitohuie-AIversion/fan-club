@@ -100,8 +100,10 @@ class FCProcessTest(FCUnitTest):
                 printers[us.R], printers[us.X], printers[us.D]
 
             printd("[DP] DummyProcess routine started")
-            gui = tk.Tk()
-
+            try:
+                gui = tk.Tk()
+            except tk.TclError:
+                gui = None
 
             def mainloop():
                 done = False
@@ -118,15 +120,19 @@ class FCProcessTest(FCUnitTest):
                                         key))
                             if message[process.SUBJECT] == process.STOP:
                                 done = True
-                gui.quit()
+                if gui is not None:
+                    gui.quit()
 
             try:
-                thread = mt.Thread(target = mainloop, daemon = True)
-                thread.start()
-                gui.mainloop()
-                thread.join(1)
-                if thread.is_alive():
-                    raise RuntimeError("DT Auxiliary thread stuck")
+                if gui is not None:
+                    thread = mt.Thread(target = mainloop, daemon = True)
+                    thread.start()
+                    gui.mainloop()
+                    thread.join(1)
+                    if thread.is_alive():
+                        raise RuntimeError("DT Auxiliary thread stuck")
+                else:
+                    mainloop()
             except Exception as e:
                 printx(e)
                 pipes[process.MESSAGE].send(

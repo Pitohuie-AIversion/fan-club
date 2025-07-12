@@ -13,6 +13,7 @@ Here I refer to the front-end script you run on your computer as "master" (`mast
 Specific fan arrays (which microcontrollers, connected in what way, running what fans, etc.) are represented as "profiles." You can switch between existing profiles in the **Profiles** tab on the top-right of the master GUI. In this tab, on the top-right there is an option to switch profiles.
 
 You can set which of the existing profiles is loaded on startup by setting the `INIT_PROFILE`  variable defined at the start of `master/main.py`. 
+A built-in `TENBYTEN` profile is available for a 10x10 array.
 
 To create a new profile, define it as a dictionary in `master/fc/builtin/profiles.py` and add this dictionary to the `PROFILES` dictionary defined at the very end of that file. Choosing a profile in the GUI amounts to specifying a string to query off that `PROFILES` dictionary. You may copy, rename and modify of the existing profiles to create your own.
 

@@ -29,6 +29,8 @@
 ## IMPORTS #####################################################################
 import pickle as pk
 import copy as cp
+from pathlib import Path
+from typing import Union
     # For deep copies. See:
     # https://stackoverflow.com/questions/3975376/\
     #   understanding-dict-copy-shallow-or-deep/3975388
@@ -295,7 +297,7 @@ def make_length_validator(length):
     LENGTH.
     """
     def validator(value):
-        if len(value) is not length:
+        if len(value) != length:
             raise ValueError(
                 "Value ({}) does not have the required length {}".format(value,
                     length))
@@ -661,7 +663,12 @@ class FCArchive(pt.PrintClient):
     meta = META
     defaults = DEFAULTS
 
-    """ Default profile. """
+    """Default profile used when no profile is provided.
+
+    This dictionary contains sensible network and hardware parameters for a
+    single-module setup. New profiles should be created by copying and
+    modifying these values.
+    """
     DEFAULT = {
         name : "Unnamed FC Profile",
         description : "",
@@ -822,7 +829,7 @@ class FCArchive(pt.PrintClient):
         except KeyError as e:
             self.printe("Invalid FC Archive key \"{}\"".format(attribute))
 
-    def load(self, name):
+    def load(self, name: Union[str, Path]):
         """
         Load profile data from a file named NAME with extension.
 
@@ -831,7 +838,9 @@ class FCArchive(pt.PrintClient):
         """
         try:
             old = self.P
-            new = pk.load(open(name, 'rb'))
+            path = Path(name)
+            with path.open('rb') as fh:
+                new = pk.load(fh)
             # TODO: Validate?
             self.P = new
             self.P.update(self.runtime)
@@ -840,7 +849,7 @@ class FCArchive(pt.PrintClient):
             self.printx(e, "Could not load profile")
             self.P = old
 
-    def save(self, name):
+    def save(self, name: Union[str, Path]):
         """
         Save current profile to file named NAME.
         Note that if a file with this name and extension exists it will be
@@ -850,7 +859,9 @@ class FCArchive(pt.PrintClient):
         sent to the print queue.
         """
         try:
-            pk.dump(self.profile(), open(name, 'wb'))
+            path = Path(name)
+            with path.open('wb') as fh:
+                pk.dump(self.profile(), fh)
             self.isModified = False
         except IOError as e:
             self.printx(e, "Could not save profile")
